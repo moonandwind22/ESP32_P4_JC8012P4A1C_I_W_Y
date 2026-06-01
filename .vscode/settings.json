@@ -1,0 +1,10 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "pio": true,
+        "/^python -m platformio run$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "move": true
+    }
+}

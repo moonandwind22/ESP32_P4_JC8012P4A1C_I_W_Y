@@ -1,0 +1,107 @@
+#ifndef C6_WORKER_CONFIG_H
+#define C6_WORKER_CONFIG_H
+
+#if defined(__has_include)
+#if __has_include("c6_worker_secrets.h")
+#include "c6_worker_secrets.h"
+#endif
+#if __has_include("app_secrets.h")
+#include "app_secrets.h"
+#endif
+#endif
+
+#ifndef C6_WORKER_WIFI_SSID
+#if defined(LONDONBRIEF_WIFI_SSID)
+#define C6_WORKER_WIFI_SSID LONDONBRIEF_WIFI_SSID
+#else
+#define C6_WORKER_WIFI_SSID "YOUR_WIFI_SSID"
+#endif
+#endif
+
+#ifndef C6_WORKER_WIFI_PASSWORD
+#if defined(LONDONBRIEF_WIFI_PASSWORD)
+#define C6_WORKER_WIFI_PASSWORD LONDONBRIEF_WIFI_PASSWORD
+#else
+#define C6_WORKER_WIFI_PASSWORD "YOUR_WIFI_PASSWORD"
+#endif
+#endif
+
+#ifndef C6_WORKER_LOCATION_NAME
+#define C6_WORKER_LOCATION_NAME "London"
+#endif
+
+#ifndef C6_WORKER_LATITUDE
+#define C6_WORKER_LATITUDE 51.5072
+#endif
+
+#ifndef C6_WORKER_LONGITUDE
+#define C6_WORKER_LONGITUDE -0.1276
+#endif
+
+#ifndef C6_WORKER_TFL_APP_KEY
+#if defined(LONDONBRIEF_TFL_APP_KEY)
+#define C6_WORKER_TFL_APP_KEY LONDONBRIEF_TFL_APP_KEY
+#else
+#define C6_WORKER_TFL_APP_KEY ""
+#endif
+#endif
+
+#ifndef C6_WORKER_NEWS_RSS_URL
+#define C6_WORKER_NEWS_RSS_URL "https://feeds.bbci.co.uk/news/rss.xml?edition=uk"
+#endif
+
+#ifndef C6_WORKER_TLS_ROOT_CA
+#if defined(LONDONBRIEF_TLS_ROOT_CA)
+#define C6_WORKER_TLS_ROOT_CA LONDONBRIEF_TLS_ROOT_CA
+#else
+#define C6_WORKER_TLS_ROOT_CA ""
+#endif
+#endif
+
+#ifndef C6_WORKER_ALLOW_INSECURE_TLS
+#if defined(LONDONBRIEF_LAB_ALLOW_INSECURE_TLS)
+#define C6_WORKER_ALLOW_INSECURE_TLS LONDONBRIEF_LAB_ALLOW_INSECURE_TLS
+#elif defined(C6_WORKER_LAB_ALLOW_INSECURE_TLS) && C6_WORKER_LAB_ALLOW_INSECURE_TLS
+#define C6_WORKER_ALLOW_INSECURE_TLS 1
+#else
+#define C6_WORKER_ALLOW_INSECURE_TLS 0
+#endif
+#endif
+
+#ifndef C6_WORKER_NETWORK_MODE
+#define C6_WORKER_NETWORK_MODE 0
+#endif
+
+#ifndef C6_WORKER_ENABLE_BINARY_SNAPSHOT_STREAM
+#define C6_WORKER_ENABLE_BINARY_SNAPSHOT_STREAM 1
+#endif
+
+#ifndef C6_WORKER_DEBUG_SERIAL
+#define C6_WORKER_DEBUG_SERIAL 0
+#endif
+
+#ifndef C6_WORKER_TRANSPORT
+#define C6_WORKER_TRANSPORT 1
+#endif
+
+#ifndef C6_WORKER_SERIAL_BAUD
+#define C6_WORKER_SERIAL_BAUD 115200
+#endif
+
+#ifndef C6_WORKER_SERIAL_PORT
+#define C6_WORKER_SERIAL_PORT 1
+#endif
+
+#ifndef C6_WORKER_SERIAL_RX_PIN
+#define C6_WORKER_SERIAL_RX_PIN -1
+#endif
+
+#ifndef C6_WORKER_SERIAL_TX_PIN
+#define C6_WORKER_SERIAL_TX_PIN -1
+#endif
+
+#ifndef C6_WORKER_ALLOW_USB_BINARY_FALLBACK
+#define C6_WORKER_ALLOW_USB_BINARY_FALLBACK 0
+#endif
+
+#endif

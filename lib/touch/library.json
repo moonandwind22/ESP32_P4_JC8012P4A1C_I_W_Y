@@ -1,0 +1,8 @@
+{
+  "name": "gsl3680-touch",
+  "version": "1.0.0",
+  "build": {
+    "srcDir": ".",
+    "includeDir": "."
+  }
+}
