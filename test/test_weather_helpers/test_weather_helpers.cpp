@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <unity.h>
 
-#include "../../src/weather_service.cpp"
+#include "../../main/weather_service.cpp"
 
 void test_weather_code_text_and_labels()
 {

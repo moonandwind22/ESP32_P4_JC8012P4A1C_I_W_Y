@@ -1,0 +1,12 @@
+# LondonBrief_P4 16MB flash layout.
+# Derived from arduino-esp32's app3M_fat9M_fact512k_16MB.csv, minus the 512KB
+# "factory" slot: the application is ~1.6MB and would not fit there. ESP-IDF
+# flashes/boots the app from ota_0 (0x10000), which is also where the previous
+# PlatformIO build uploaded the firmware.
+# Name,   Type, SubType,  Offset,   Size,     Flags
+nvs,      data, nvs,        0x9000,   0x5000,
+otadata,  data, ota,        0xe000,   0x2000,
+app0,     app,  ota_0,     0x10000, 0x300000,
+app1,     app,  ota_1,    0x310000, 0x300000,
+ffat,     data, fat,      0x610000, 0x960000,
+coredump, data, coredump, 0xFF0000,  0x10000,

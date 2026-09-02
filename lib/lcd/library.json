@@ -1,8 +1,0 @@
-{
-  "name": "jd9365-lcd",
-  "version": "1.0.0",
-  "build": {
-    "srcDir": ".",
-    "includeDir": "."
-  }
-}

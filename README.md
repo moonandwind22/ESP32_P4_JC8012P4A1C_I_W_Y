@@ -31,35 +31,73 @@ Practical rule:
 
 - `ESP32-P4` runs the UI, touch handling, dashboard logic, and application services.
 - The onboard `ESP32-C6` is used by the hosted Wi-Fi stack for P4 networking.
-- The normal production environment is `esp32p4-local`.
+- The normal production environment is the default ESP-IDF build (local hosted Wi-Fi).
 
-## PlatformIO Environments
+## Build System (ESP-IDF)
 
-### Main
+The P4 firmware is a native **ESP-IDF v5.5.4** project that keeps the Arduino
+API surface through **arduino-esp32 3.3.x** (`components/arduino`, a git
+submodule pinned to `3.3.11`). LVGL 9.5 and ArduinoJson 7 come from the
+ESP Component Registry as managed components (`main/idf_component.yml`).
 
-- `esp32p4-local`
-  - Normal P4 build using the hosted Wi-Fi path.
+### Prerequisites
 
-### Debug
+1. Install ESP-IDF **v5.5.4** (see the
+   [ESP-IDF getting started guide](https://docs.espressif.com/projects/esp-idf/en/v5.5.4/esp32p4/get-started/index.html)).
+2. Clone this repository with submodules:
 
-- `esp32p4-local-wifi-debug`
-  - Extra Wi-Fi startup and hosted-link diagnostics.
-- `esp32p4-local-service-debug`
-  - Extra Weather/TfL/News service logging.
-- `esp32p4-local-full-debug`
-  - Combines Wi-Fi and service debug output.
+   ```powershell
+   git clone --recurse-submodules <repo-url>
+   # or, inside an existing checkout:
+   git submodule update --init --recursive
+   ```
 
-### Experimental / Reference
+### Build / Flash / Monitor
 
-- `esp32p4-c6-sdio-worker`
-- `esp32p4-c6-worker`
-- `esp32p4-c6-uart-worker`
+```powershell
+# from the ESP-IDF environment (export.ps1 / export.sh sourced)
+idf.py set-target esp32p4    # once per checkout (no sdkconfig yet)
+idf.py build
+idf.py -p <PORT> flash monitor
+```
 
-These exist for reference and experimentation only. They should not be treated as the default path for this board.
+Board configuration lives in `sdkconfig.defaults` (flash 16MB QIO 80MHz,
+32MB hex PSRAM, custom partition table `partitions_16MB.csv`, console on
+UART0/CH340, Arduino autostart with the `esp32p4` variant). Generate a
+`sdkconfig` from these defaults whenever they change (delete `sdkconfig` and
+rebuild, or run `idf.py set-target esp32p4`).
 
-### Tests
+### Build Variants (former PlatformIO environments)
 
-- `esp32p4-test`
+The PlatformIO environment matrix is preserved as CMake cache variables:
+
+| Former PlatformIO env | ESP-IDF command |
+| --- | --- |
+| `esp32p4-local` (default) | `idf.py build` |
+| `esp32p4-local-wifi-debug` | `idf.py -DLONDONBRIEF_WIFI_DEBUG=1 build` |
+| `esp32p4-local-service-debug` | `idf.py -DLONDONBRIEF_SERVICE_DEBUG=1 build` |
+| `esp32p4-local-full-debug` | `idf.py -DLONDONBRIEF_WIFI_DEBUG=1 -DLONDONBRIEF_SERVICE_DEBUG=1 build` |
+| `esp32p4-c6-sdio-worker` | `idf.py -DLONDONBRIEF_DATA_SOURCE=2 -DLONDONBRIEF_C6_TRANSPORT=2 build` |
+| `esp32p4-c6-uart-worker` | `idf.py -DLONDONBRIEF_DATA_SOURCE=1 -DLONDONBRIEF_C6_TRANSPORT=1 build` |
+
+Changing a variant flag regenerates the affected sources automatically on the
+next `idf.py build`.
+
+### ESP-Hosted note (hostedHasUpdate patch)
+
+This board's C6 co-processor firmware can make the ESP-Hosted version RPC
+wedge, so the build patches `components/arduino/cores/esp32/esp32-hal-hosted.c`
+to skip the `hostedHasUpdate()` call (same workaround the former
+`scripts/patch_hosted_framework.py` applied to PlatformIO). The patch is
+applied automatically at CMake configure time, is idempotent, and re-applies
+after the submodule is re-cloned. Disable it with
+`idf.py -DLONDONBRIEF_PATCH_HOSTED=0 build`.
+
+## Experimental / Reference
+
+- `c6_worker/` remains a PlatformIO project (not part of the ESP-IDF build).
+  It exists for reference and experimentation only and should not be treated
+  as the default path for this board.
 
 ## Schematic Notes
 
@@ -119,7 +157,8 @@ These notes are here to keep future changes aligned with the attached schematics
 
 ## Secrets / Local Configuration
 
-Expected local secrets live in `include/app_secrets.h`.
+Expected local secrets live in `main/include/app_secrets.h`
+(copy from `main/include/app_secrets.example.h`).
 
 Typical values include:
 
@@ -139,10 +178,6 @@ Current tests cover:
 - runtime Wi-Fi helper logic
 - Weather/TfL/News parsing helpers
 
-Run tests with:
-
-```powershell
-pio test -e esp32p4-test
-```
-
-If PlatformIO reports permissions problems in the user home cache, rerun with the necessary permissions so it can access its lock and cache files.
+The test sources in `test/` still reference the Unity test runner that
+PlatformIO provided. They are kept as-is (with include paths updated to
+`main/`); wiring them into an ESP-IDF test project is future work.

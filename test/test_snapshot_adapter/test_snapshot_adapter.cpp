@@ -3,7 +3,7 @@
 
 #include "dashboard_snapshot_adapter.h"
 
-#include "../../src/dashboard_snapshot_adapter.cpp"
+#include "../../main/dashboard_snapshot_adapter.cpp"
 
 namespace {
 

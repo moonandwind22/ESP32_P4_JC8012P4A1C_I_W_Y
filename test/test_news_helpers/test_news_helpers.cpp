@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <unity.h>
 
-#include "../../src/news_service.cpp"
+#include "../../main/news_service.cpp"
 
 void test_news_markup_helpers_extract_items()
 {

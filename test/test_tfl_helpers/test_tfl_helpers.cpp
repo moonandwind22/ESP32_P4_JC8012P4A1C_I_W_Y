@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <unity.h>
 
-#include "../../src/tfl_service.cpp"
+#include "../../main/tfl_service.cpp"
 
 void test_tfl_ignore_case_compare_and_deduplicate()
 {

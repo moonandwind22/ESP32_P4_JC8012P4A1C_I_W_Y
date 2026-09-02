@@ -1,0 +1,36 @@
+# LondonBrief_P4 — JC8012P4A1C_I_W_Y (ESP32-P4 + ESP32-C6)
+# Defaults for ESP-IDF v5.5.x.
+
+CONFIG_IDF_TARGET="esp32p4"
+
+# Flash: 16MB QIO @ 80MHz
+CONFIG_ESPTOOLPY_FLASHMODE_QIO=y
+CONFIG_ESPTOOLPY_FLASHFREQ_80M=y
+CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y
+
+# Partition table (same layout as the previous PlatformIO build, app in ota_0)
+CONFIG_PARTITION_TABLE_CUSTOM=y
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions_16MB.csv"
+
+# 32MB hex PSRAM @ 200MHz
+CONFIG_SPIRAM=y
+
+# Console on UART0 (onboard CH340 USB-serial)
+CONFIG_ESP_CONSOLE_UART_DEFAULT=y
+CONFIG_ESP_CONSOLE_UART_BAUDRATE=115200
+
+# Core-dump to the dedicated flash partition
+CONFIG_ESP_COREDUMP_ENABLE_TO_FLASH=y
+
+# Arduino core (arduino-esp32 3.3.x as ESP-IDF component)
+CONFIG_FREERTOS_HZ=1000
+CONFIG_AUTOSTART_ARDUINO=y
+CONFIG_ARDUINO_VARIANT="esp32p4"
+
+# LVGL is configured through main/include/lv_conf.h, not through Kconfig.
+CONFIG_LV_CONF_SKIP=n
+CONFIG_LV_BUILD_EXAMPLES=n
+CONFIG_LV_BUILD_DEMOS=n
+
+# Arduino NetworkClientSecure (ssl_client.cpp) requires PSK ciphersuites
+CONFIG_MBEDTLS_PSK_MODES=y
