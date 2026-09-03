@@ -12,6 +12,12 @@ CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y
 CONFIG_PARTITION_TABLE_CUSTOM=y
 CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions_16MB.csv"
 
+# Early P4 silicon (this board is chip revision v1.x). ESP-IDF v5.5 defaults
+# to v3.1+ only; pre-v3.0 and v3.x support are mutually exclusive, so select
+# the pre-v3 line explicitly and target v1.0+ (max supported becomes v1.99).
+CONFIG_ESP32P4_SELECTS_REV_LESS_V3=y
+CONFIG_ESP32P4_REV_MIN_100=y
+
 # 32MB hex PSRAM @ 200MHz
 CONFIG_SPIRAM=y
 

@@ -63,9 +63,11 @@ idf.py -p <PORT> flash monitor
 
 Board configuration lives in `sdkconfig.defaults` (flash 16MB QIO 80MHz,
 32MB hex PSRAM, custom partition table `partitions_16MB.csv`, console on
-UART0/CH340, Arduino autostart with the `esp32p4` variant). Generate a
-`sdkconfig` from these defaults whenever they change (delete `sdkconfig` and
-rebuild, or run `idf.py set-target esp32p4`).
+UART0/CH340, Arduino autostart with the `esp32p4` variant). It also targets
+**early P4 silicon** (`ESP32P4_SELECTS_REV_LESS_V3` + rev v1.0+), since
+ESP-IDF v5.5 defaults to chip revision v3.1+ and the boards in the field are
+v1.x. Generate a `sdkconfig` from these defaults whenever they change (delete
+`sdkconfig` and rebuild, or run `idf.py set-target esp32p4`).
 
 ### Build Variants (former PlatformIO environments)
 
